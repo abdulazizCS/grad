@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة منصة خريج</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:      #07090f;
+  --s1:      #0d1119;
+  --card:    #101520;
+  --border:  #1a2535;
+  --border2: #243044;
+  --reg:     #22c55e;
+  --reg2:    #86efac;
+  --unreg:   #ef4444;
+  --unreg2:  #fca5a5;
+  --female:  #e879f9;
+  --male:    #38bdf8;
+  --gold:    #f59e0b;
+  --blue:    #6366f1;
+  --teal:    #14b8a6;
+  --text:    #e2eaf5;
+  --muted:   #4d6480;
+  --muted2:  #8aa0bc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl}
+
+/* animated mesh */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 700px 500px at 80% 10%, rgba(34,197,94,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 400px at 10% 80%, rgba(239,68,68,.04) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+.wrap{position:relative;z-index:1;max-width:1480px;margin:0 auto;padding:0 28px 60px}
+
+/* ── HEADER ── */
+header{
+  padding:28px 0 24px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:30px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+}
+.hd-brand{display:flex;align-items:center;gap:14px}
+.hd-logo{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,#22c55e 0%,#14b8a6 100%);
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  box-shadow:0 0 28px rgba(34,197,94,.25);
+}
+.hd-txt h1{font-size:20px;font-weight:900;letter-spacing:-.3px}
+.hd-txt p{font-size:12px;color:var(--muted2);margin-top:3px}
+.hd-pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700;border:1px solid}
+.pill-g{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--reg)}
+.pill-r{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--unreg)}
+.pill-b{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.3);color:#a5b4fc}
+
+/* ── BIG RATE ── */
+.rate-banner{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:28px 32px;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:32px;flex-wrap:wrap;
+  animation:fu .4s ease both;
+}
+.rate-circle{
+  position:relative;width:140px;height:140px;flex-shrink:0;
+}
+.rate-circle canvas{position:absolute;top:0;left:0}
+.rate-center{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.rate-num{font-size:32px;font-weight:900;color:var(--reg);line-height:1}
+.rate-sub{font-size:11px;color:var(--muted2);margin-top:3px}
+.rate-info{flex:1;min-width:220px}
+.rate-title{font-size:18px;font-weight:800;margin-bottom:14px}
+.rate-bars{display:flex;flex-direction:column;gap:10px}
+.rb-row{display:flex;align-items:center;gap:10px}
+.rb-label{font-size:12px;color:var(--muted2);min-width:80px}
+.rb-track{flex:1;height:10px;background:var(--border);border-radius:8px;overflow:hidden}
+.rb-fill{height:100%;border-radius:8px;transition:width 1.5s cubic-bezier(.23,1,.32,1)}
+.rb-val{font-size:12px;font-weight:700;min-width:60px;text-align:left}
+.rate-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px}
+.rs-item{text-align:center}
+.rs-n{font-size:22px;font-weight:900}
+.rs-l{font-size:11px;color:var(--muted2);margin-top:2px}
+
+/* ── KPI ── */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+.kpi{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:18px 16px;
+  position:relative;overflow:hidden;
+  animation:fu .4s ease both;
+}
+.kpi-ico{font-size:22px;display:block;margin-bottom:8px}
+.kpi-n{font-size:28px;font-weight:900;line-height:1;display:block}
+.kpi-lbl{font-size:11px;color:var(--muted2);margin-top:5px;font-weight:500}
+.kpi-delta{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;
+  margin-top:5px;
+}
+.dg{background:rgba(34,197,94,.12);color:var(--reg)}
+.dr{background:rgba(239,68,68,.12);color:var(--unreg)}
+
+/* ── GRID ── */
+.row{display:grid;gap:14px;margin-bottom:14px}
+.r31{grid-template-columns:2fr 1fr}
+.r22{grid-template-columns:1fr 1fr}
+.r13{grid-template-columns:1fr 2fr}
+.r111{grid-template-columns:1fr 1fr 1fr}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;animation:fu .45s ease both}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.card-title{font-size:14px;font-weight:700}
+.chip{font-size:11px;padding:3px 10px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted2)}
+
+canvas{max-height:300px}
+.card.tall canvas{max-height:400px}
+
+/* ── LEGEND ── */
+.leg{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted2)}
+.dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+
+/* ── GENDER COMPARE ── */
+.g-compare{display:flex;flex-direction:column;gap:14px}
+.g-row{background:rgba(255,255,255,.025);border-radius:10px;padding:14px 16px;border:1px solid var(--border)}
+.g-row-title{font-size:12px;color:var(--muted2);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.g-bar-wrap{display:flex;align-items:stretch;height:32px;border-radius:8px;overflow:hidden;gap:1px}
+.g-seg{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:width .2s}
+.g-nums{display:flex;justify-content:space-between;margin-top:6px}
+.g-num{font-size:11px}
+
+/* ── COLLEGE TABLE ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:right;font-size:10px;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.tbl td{padding:9px 10px;font-size:12px;border-bottom:1px solid rgba(26,37,53,.6)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.018)}
+.rank{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--border);color:var(--muted2)}
+.rank.r1{background:rgba(245,158,11,.18);color:var(--gold)}
+.rank.r2{background:rgba(148,163,184,.12);color:#94a3b8}
+.rank.r3{background:rgba(205,127,50,.12);color:#cd7f32}
+
+/* progress in table */
+.prog-wrap{display:flex;align-items:center;gap:6px}
+.prog-bg{flex:1;height:8px;background:var(--border);border-radius:6px;overflow:hidden;position:relative}
+.prog-reg{height:100%;background:var(--reg);border-radius:6px;position:absolute;top:0;right:0}
+.prog-un{position:absolute;top:0;right:0;height:100%;border-radius:6px}
+.pct-txt{font-size:11px;color:var(--muted2);min-width:36px;text-align:left}
+
+.badge-g{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(34,197,94,.1);color:var(--reg);border:1px solid rgba(34,197,94,.25)}
+.badge-r{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(239,68,68,.1);color:var(--unreg);border:1px solid rgba(239,68,68,.25)}
+
+/* stacked mini bar */
+.sbar{display:flex;height:6px;border-radius:4px;overflow:hidden;gap:1px}
+.sbar-g{background:var(--reg)}
+.sbar-r{background:var(--unreg)}
+
+/* filter btn */
+.fb{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted2);padding:5px 13px;border-radius:100px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;transition:.18s;font-weight:500}
+.fb:hover{border-color:var(--teal);color:var(--teal)}
+.fb.on{background:rgba(20,184,166,.13);border-color:var(--teal);color:#5eead4;font-weight:700}
+.filters{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+
+/* section divider */
+.sec-label{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--teal);display:flex;align-items:center;gap:10px;margin:24px 0 14px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* animations */
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.kpi:nth-child(1){animation-delay:.03s}.kpi:nth-child(2){animation-delay:.06s}
+.kpi:nth-child(3){animation-delay:.09s}.kpi:nth-child(4){animation-delay:.12s}
+.kpi:nth-child(5){animation-delay:.15s}.kpi:nth-child(6){animation-delay:.18s}
+
+/* responsive */
+@media(max-width:1100px){.kpi-row{grid-template-columns:repeat(3,1fr)}.r31,.r22,.r111{grid-template-columns:1fr}}
+@media(max-width:600px){.kpi-row{grid-template-columns:repeat(2,1fr)}.kpi-n{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="hd-brand">
+    <div class="hd-logo">🎓</div>
+    <div class="hd-txt">
+      <h1>لوحة منصة خريج</h1>
+      <p>مقارنة شاملة بين المسجّلين وغير المسجّلين – جامعة جازان</p>
+    </div>
+  </div>
+  <div class="hd-pills">
+    <span class="pill pill-b">📋 إجمالي الطلاب: 9,568</span>
+    <span class="pill pill-g">✅ مسجّل: 7,767</span>
+    <span class="pill pill-r">⚠ غير مسجّل: 1,801</span>
+  </div>
+</header>
+
+<!-- BIG RATE BANNER -->
+<div class="rate-banner">
+  <div class="rate-circle">
+    <canvas id="rateDonut" width="140" height="140"></canvas>
+    <div class="rate-center">
+      <span class="rate-num">81.2%</span>
+      <span class="rate-sub">نسبة التسجيل</span>
+    </div>
+  </div>
+  <div class="rate-info">
+    <div class="rate-title">نسبة الإنجاز على منصة خريج</div>
+    <div class="rate-bars">
+      <div class="rb-row">
+        <span class="rb-label">✅ مسجّلون</span>
+        <div class="rb-track"><div class="rb-fill" style="width:0%;background:var(--reg)" data-w="81.2"></div></div>
+        <span class="rb-val" style="color:var(--reg)">7,767</span>
+      </div>
+      <div class="rb-row">
+        <span class="rb-label">⚠ غير مسجّل</span>
+        <div class="rb-track"><div class="rb-fill" style="width:0%;background:var(--unreg)" data-w="18.8"></div></div>
+        <span class="rb-val" style="color:var(--unreg)">1,801</span>
+      </div>
+    </div>
+    <div class="rate-stats">
+      <div class="rs-item"><div class="rs-n" style="color:var(--reg)">81.2%</div><div class="rs-l">نسبة التسجيل</div></div>
+      <div class="rs-item"><div class="rs-n" style="color:var(--unreg)">18.8%</div><div class="rs-l">نسبة عدم التسجيل</div></div>
+      <div class="rs-item"><div class="rs-n" style="color:var(--gold)">22</div><div class="rs-l">كلية وفرع</div></div>
+      <div class="rs-item"><div class="rs-n" style="color:var(--blue)">9,568</div><div class="rs-l">إجمالي الطلاب</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi">
+    <span class="kpi-ico">📊</span>
+    <span class="kpi-n" style="color:#e2eaf5">9,568</span>
+    <div class="kpi-lbl">إجمالي الطلاب</div>
+    <span class="kpi-delta" style="background:rgba(99,102,241,.12);color:#a5b4fc">100%</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi-ico">✅</span>
+    <span class="kpi-n" style="color:var(--reg)">7,767</span>
+    <div class="kpi-lbl">مسجّلون في خريج</div>
+    <span class="kpi-delta dg">81.2%</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi-ico">⚠️</span>
+    <span class="kpi-n" style="color:var(--unreg)">1,801</span>
+    <div class="kpi-lbl">غير مسجّلين</div>
+    <span class="kpi-delta dr">18.8%</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi-ico">👩‍🎓</span>
+    <span class="kpi-n" style="color:var(--female)">6,431</span>
+    <div class="kpi-lbl">إجمالي الإناث</div>
+    <span class="kpi-delta" style="background:rgba(232,121,249,.1);color:var(--female)">67.2%</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi-ico">👨‍🎓</span>
+    <span class="kpi-n" style="color:var(--male)">2,995</span>
+    <div class="kpi-lbl">إجمالي الذكور</div>
+    <span class="kpi-delta" style="background:rgba(56,189,248,.1);color:var(--male)">31.3%</span>
+  </div>
+  <div class="kpi">
+    <span class="kpi-ico">🏛️</span>
+    <span class="kpi-n" style="color:var(--teal)">93.9%</span>
+    <div class="kpi-lbl">أعلى نسبة تسجيل</div>
+    <span class="kpi-delta" style="background:rgba(20,184,166,.1);color:var(--teal)">كلية التصميم</span>
+  </div>
+</div>
+
+<!-- SEC: GENDER -->
+<div class="sec-label">⚧️ مقارنة الجنس</div>
+<div class="row r111">
+  <!-- gender compare visual -->
+  <div class="card" style="grid-column:span 2;">
+    <div class="card-hd">
+      <span class="card-title">توزيع الجنس: مسجّل مقابل غير مسجّل</span>
+    </div>
+    <canvas id="genderBar"></canvas>
+    <div class="leg" style="margin-top:12px">
+      <span class="leg-item"><span class="dot" style="background:var(--female)"></span>إناث مسجّلات</span>
+      <span class="leg-item"><span class="dot" style="background:rgba(232,121,249,.35)"></span>إناث غير مسجّلات</span>
+      <span class="leg-item"><span class="dot" style="background:var(--male)"></span>ذكور مسجّلون</span>
+      <span class="leg-item"><span class="dot" style="background:rgba(56,189,248,.35)"></span>ذكور غير مسجّلون</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="card-title">نسب الجنس داخل كل مجموعة</span></div>
+    <div class="g-compare">
+      <div class="g-row">
+        <div class="g-row-title">✅ المسجّلون <span style="color:var(--muted2)">(7,767)</span></div>
+        <div class="g-bar-wrap">
+          <div class="g-seg" style="width:73.2%;background:rgba(232,121,249,.75);font-size:12px">73.2%</div>
+          <div class="g-seg" style="width:26.8%;background:rgba(56,189,248,.75);font-size:12px">26.8%</div>
+        </div>
+        <div class="g-nums">
+          <span class="g-num" style="color:var(--female)">♀ 5,688</span>
+          <span class="g-num" style="color:var(--male)">♂ 2,079</span>
+        </div>
+      </div>
+      <div class="g-row">
+        <div class="g-row-title">⚠ غير المسجّلين <span style="color:var(--muted2)">(1,801)</span></div>
+        <div class="g-bar-wrap">
+          <div class="g-seg" style="width:41.3%;background:rgba(232,121,249,.75);font-size:12px">41.3%</div>
+          <div class="g-seg" style="width:58.7%;background:rgba(56,189,248,.75);font-size:12px">58.7%</div>
+        </div>
+        <div class="g-nums">
+          <span class="g-num" style="color:var(--female)">♀ 743</span>
+          <span class="g-num" style="color:var(--male)">♂ 1,058</span>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.025);border-radius:10px;padding:12px;border:1px solid var(--border);margin-top:4px">
+        <div style="font-size:11px;color:var(--muted2);font-weight:600;margin-bottom:8px">🔍 ملاحظة مهمة</div>
+        <div style="font-size:12px;line-height:1.7;color:var(--muted2)">
+          الإناث أكثر تسجيلاً بنسبة <span style="color:var(--female);font-weight:700">73.2%</span> في المسجّلين مقابل <span style="color:var(--unreg);font-weight:700">41.3%</span> في غير المسجّلين — أي أن الذكور يحتاجون متابعة أكبر.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEC: COLLEGES -->
+<div class="sec-label">🏛️ الكليات</div>
+<div class="row r31">
+  <div class="card tall">
+    <div class="card-hd">
+      <span class="card-title">المسجّلون وغير المسجّلين حسب الكلية</span>
+      <span class="chip">أعلى 14 كلية</span>
+    </div>
+    <canvas id="collegeBar"></canvas>
+    <div class="leg" style="margin-top:10px">
+      <span class="leg-item"><span class="dot" style="background:var(--reg)"></span>مسجّلون</span>
+      <span class="leg-item"><span class="dot" style="background:var(--unreg)"></span>غير مسجّلين</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="card-title">نسبة التسجيل لكل كلية</span><span class="chip">% مسجّل</span></div>
+    <div style="overflow-y:auto;max-height:370px">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>الكلية</th><th>نسبة التسجيل</th></tr></thead>
+        <tbody id="colRateBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SEC: DEGREES -->
+<div class="sec-label">🎓 الدرجة العلمية</div>
+<div class="row r22">
+  <div class="card">
+    <div class="card-hd"><span class="card-title">توزيع الدرجات العلمية – مقارنة</span></div>
+    <canvas id="degBar"></canvas>
+    <div class="leg" style="margin-top:10px">
+      <span class="leg-item"><span class="dot" style="background:var(--reg)"></span>مسجّلون</span>
+      <span class="leg-item"><span class="dot" style="background:var(--unreg)"></span>غير مسجّلين</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">نسبة التسجيل حسب الدرجة</span></div>
+    <canvas id="degRate"></canvas>
+  </div>
+</div>
+
+<!-- SEC: SPECIALTIES -->
+<div class="sec-label">📚 التخصصات</div>
+<div class="row" style="grid-template-columns:1fr">
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">أعلى 12 تخصص – مسجّل مقابل غير مسجّل</span>
+    </div>
+    <canvas id="spCompare" style="max-height:320px"></canvas>
+    <div class="leg" style="margin-top:10px">
+      <span class="leg-item"><span class="dot" style="background:var(--reg)"></span>مسجّلون</span>
+      <span class="leg-item"><span class="dot" style="background:var(--unreg)"></span>غير مسجّلين</span>
+    </div>
+  </div>
+</div>
+
+<!-- SEC: FULL COLLEGE TABLE -->
+<div class="sec-label">📋 جدول تفصيلي شامل</div>
+<div class="card">
+  <div class="card-hd" style="flex-wrap:wrap;gap:12px;">
+    <span class="card-title">تفاصيل كل الكليات</span>
+    <div class="filters">
+      <span style="font-size:12px;color:var(--muted2);font-weight:600">ترتيب حسب:</span>
+      <button class="fb on" onclick="sortTable('total',this)">الإجمالي</button>
+      <button class="fb"    onclick="sortTable('reg_pct',this)">نسبة التسجيل ↑</button>
+      <button class="fb"    onclick="sortTable('reg_pct_asc',this)">نسبة التسجيل ↓</button>
+      <button class="fb"    onclick="sortTable('unreg',this)">الأكثر تغيباً</button>
+    </div>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="tbl">
+      <thead><tr>
+        <th>#</th><th>الكلية</th><th>الإجمالي</th><th>مسجّل / غير مسجّل</th>
+        <th>نسبة التسجيل</th><th>مسجّلون</th><th>غير مسجّلين</th>
+      </tr></thead>
+      <tbody id="mainBody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<script>
+Chart.defaults.color='#4d6480';
+Chart.defaults.font.family="'Tajawal',sans-serif";
+Chart.defaults.font.size=12;
+
+const TOTAL=9568, REG=7767, UNREG=1801;
+
+// ── DATA ──
+const colleges=[
+  {name:"كلية الأعمال",            total:1750,reg:1406,unreg:344,reg_pct:80.3},
+  {name:"كلية الهندسة وعلوم الحاسب",total:1428,reg:1171,unreg:257,reg_pct:82.0},
+  {name:"الكلية التطبيقية في جيزان",total:1244,reg:987, unreg:257,reg_pct:79.3},
+  {name:"كلية العلوم",              total:1113,reg:995, unreg:118,reg_pct:89.4},
+  {name:"كلية التمريض والعلوم الصحية",total:1077,reg:937,unreg:140,reg_pct:87.0},
+  {name:"كلية الفنون والعلوم الإنسانية",total:843,reg:631,unreg:212,reg_pct:74.9},
+  {name:"كلية الشريعة والقانون",    total:354, reg:254, unreg:100,reg_pct:71.8},
+  {name:"الكلية الجامعية بمحافظة الدرب",total:343,reg:292,unreg:51,reg_pct:85.1},
+  {name:"فرع الكلية التطبيقية بصامطة",total:227,reg:198,unreg:29,reg_pct:87.2},
+  {name:"كلية التطبيقات الصناعية ببيش",total:172,reg:53,unreg:119,reg_pct:30.8},
+  {name:"الكلية الجامعية بمحافظة الداير",total:171,reg:141,unreg:30,reg_pct:82.5},
+  {name:"كلية التصميم والعمارة",    total:164, reg:154, unreg:10, reg_pct:93.9},
+  {name:"كلية الطب",                total:160, reg:144, unreg:16, reg_pct:90.0},
+  {name:"فرع الكلية التطبيقية بالعارضة",total:157,reg:132,unreg:25,reg_pct:84.1},
+  {name:"كلية الصيدلة",             total:140, reg:111, unreg:29, reg_pct:79.3},
+  {name:"كلية طب الأسنان",          total:94,  reg:49,  unreg:45, reg_pct:52.1},
+  {name:"الكلية الجامعية بمحافظة فرسان",total:63,reg:57,unreg:6,reg_pct:90.5},
+  {name:"الكلية الجامعية بمحافظة صامطة",total:60,reg:53,unreg:7,reg_pct:88.3},
+  {name:"كلية الآداب والعلوم الإنسانية",total:5,reg:2,unreg:3,reg_pct:40.0},
+  {name:"كلية إدارة الأعمال",       total:1,   reg:0,   unreg:1,  reg_pct:0.0},
+  {name:"كلية التمريض",             total:1,   reg:0,   unreg:1,  reg_pct:0.0},
+  {name:"كلية المجتمع",             total:1,   reg:0,   unreg:1,  reg_pct:0.0}
+];
+
+const regSp={
+  "تقنية المعلومات":478,"التمريض":425,"علوم الحاسب":395,"إدارة الأعمال":385,
+  "الكيمياء":312,"اللغة الإنجليزية":311,"المحاسبة":305,"المالية والأعمال المصرفية":287,
+  "الفيزياء":265,"التسويق والتجارة الالكترونية":263,"الأحياء":255,"الأمن السيبراني - دبلوم":255
+};
+const unregSp={
+  "اللغة الإنجليزية":108,"الأمن السيبراني - دبلوم":81,"المحاسبة":78,
+  "التسويق والتجارة الالكترونية":73,"تقنية المعلومات":71,"نظم المعلومات الإدارية":67,
+  "إدارة الأعمال":64,"علوم الحاسب":59,"التسويق والتجارة الالكترونية - دبلوم":59,
+  "المالية والأعمال المصرفية":53,"تقنية هندسة القوى الكهربائية":52,"الشريعة":50
+};
+
+// ── 1. RATE DONUT ──
+new Chart(document.getElementById('rateDonut'),{
+  type:'doughnut',
+  data:{
+    labels:['مسجّل','غير مسجّل'],
+    datasets:[{
+      data:[7767,1801],
+      backgroundColor:['rgba(34,197,94,.85)','rgba(239,68,68,.75)'],
+      borderColor:['rgba(34,197,94,1)','rgba(239,68,68,1)'],
+      borderWidth:2,hoverOffset:6
+    }]
+  },
+  options:{
+    cutout:'78%',responsive:false,
+    plugins:{legend:{display:false},tooltip:{rtl:true,callbacks:{label:ctx=>` ${ctx.parsed.toLocaleString('ar')}`}}}
+  }
+});
+
+// ── 2. GENDER GROUPED BAR ──
+new Chart(document.getElementById('genderBar'),{
+  type:'bar',
+  data:{
+    labels:['إناث','ذكور'],
+    datasets:[
+      {label:'مسجّلات/مسجّلون', data:[5688,2079], backgroundColor:['rgba(232,121,249,.8)','rgba(56,189,248,.8)'], borderRadius:6, borderSkipped:false},
+      {label:'غير مسجّلات/غير مسجّلين', data:[743,1058], backgroundColor:['rgba(232,121,249,.3)','rgba(56,189,248,.3)'], borderRadius:6, borderSkipped:false, borderWidth:1, borderColor:['rgba(232,121,249,.6)','rgba(56,189,248,.6)']}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:false},tooltip:{rtl:true,callbacks:{label:ctx=>` ${ctx.parsed.y.toLocaleString('ar')} طالب`}}},
+    scales:{
+      x:{grid:{display:false},border:{display:false}},
+      y:{grid:{color:'rgba(26,37,53,.8)'},border:{display:false},ticks:{color:'var(--muted)'}}
+    }
+  }
+});
+
+// ── 3. COLLEGE STACKED BAR ──
+const top14 = colleges.slice(0,14);
+new Chart(document.getElementById('collegeBar'),{
+  type:'bar',
+  data:{
+    labels:top14.map(c=>c.name),
+    datasets:[
+      {label:'مسجّلون',      data:top14.map(c=>c.reg),   backgroundColor:'rgba(34,197,94,.75)',  borderRadius:4,borderSkipped:false},
+      {label:'غير مسجّلين', data:top14.map(c=>c.unreg), backgroundColor:'rgba(239,68,68,.7)',   borderRadius:4,borderSkipped:false}
+    ]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:false},tooltip:{rtl:true,callbacks:{label:ctx=>` ${ctx.parsed.x.toLocaleString('ar')} طالب`}}},
+    scales:{
+      x:{stacked:true,grid:{color:'rgba(26,37,53,.8)'},border:{display:false}},
+      y:{stacked:true,grid:{display:false},border:{display:false},ticks:{color:'#8aa0bc',font:{size:10}}}
+    }
+  }
+});
+
+// ── 4. COLLEGE RATE TABLE ──
+const sorted_rate = [...colleges].sort((a,b)=>b.reg_pct-a.reg_pct);
+const rateBody = document.getElementById('colRateBody');
+sorted_rate.forEach((c,i)=>{
+  const color = c.reg_pct>=85?'var(--reg)':c.reg_pct>=70?'var(--gold)':'var(--unreg)';
+  rateBody.innerHTML+=`
+    <tr>
+      <td><div class="rank ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div></td>
+      <td style="font-size:11px;color:var(--text)">${c.name}</td>
+      <td>
+        <div class="prog-wrap">
+          <div class="prog-bg" style="height:8px">
+            <div style="position:absolute;top:0;right:0;height:100%;width:${c.reg_pct}%;background:${color};border-radius:6px;transition:width 1.5s"></div>
+          </div>
+          <span style="font-size:12px;font-weight:700;color:${color};min-width:42px;text-align:left">${c.reg_pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+});
+
+// ── 5. DEGREE COMPARE BAR ──
+const degLabels=['البكالوريوس','الدبلوم','الماجستير','الدبلوم العالي','الدكتوراه'];
+const regDeg   =[6107,1251,140,20,0];
+const unregDeg =[1269,432,51,34,15];
+new Chart(document.getElementById('degBar'),{
+  type:'bar',
+  data:{
+    labels:degLabels,
+    datasets:[
+      {label:'مسجّلون',      data:regDeg,   backgroundColor:'rgba(34,197,94,.75)',  borderRadius:6,borderSkipped:false},
+      {label:'غير مسجّلين', data:unregDeg, backgroundColor:'rgba(239,68,68,.7)',   borderRadius:6,borderSkipped:false}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:false},tooltip:{rtl:true,callbacks:{label:ctx=>` ${ctx.parsed.y.toLocaleString('ar')} طالب`}}},
+    scales:{
+      x:{grid:{display:false},border:{display:false},ticks:{color:'#8aa0bc'}},
+      y:{grid:{color:'rgba(26,37,53,.8)'},border:{display:false}}
+    }
+  }
+});
+
+// ── 6. DEGREE RATE BAR ──
+const degRates = degLabels.map((l,i)=>{
+  const t=regDeg[i]+unregDeg[i];
+  return t>0?Math.round(regDeg[i]/t*100):0;
+});
+new Chart(document.getElementById('degRate'),{
+  type:'bar',
+  data:{
+    labels:degLabels,
+    datasets:[{
+      label:'نسبة التسجيل %',
+      data:degRates,
+      backgroundColor:degRates.map(v=>v>=85?'rgba(34,197,94,.8)':v>=65?'rgba(245,158,11,.8)':'rgba(239,68,68,.75)'),
+      borderRadius:8,borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{
+      legend:{display:false},
+      tooltip:{rtl:true,callbacks:{label:ctx=>` ${ctx.parsed.y}% نسبة التسجيل`}}
+    },
+    scales:{
+      x:{grid:{display:false},border:{display:false},ticks:{color:'#8aa0bc'}},
+      y:{max:100,grid:{color:'rgba(26,37,53,.8)'},border:{display:false},ticks:{callback:v=>v+'%'}}
+    }
+  }
+});
+
+// ── 7. SPECIALTY COMPARE ──
+const spKeys = Object.keys(regSp);
+new Chart(document.getElementById('spCompare'),{
+  type:'bar',
+  data:{
+    labels:spKeys,
+    datasets:[
+      {label:'مسجّلون',      data:spKeys.map(k=>regSp[k]),   backgroundColor:'rgba(34,197,94,.75)',  borderRadius:4,borderSkipped:false},
+      {label:'غير مسجّلين', data:spKeys.map(k=>unregSp[k]||0), backgroundColor:'rgba(239,68,68,.7)', borderRadius:4,borderSkipped:false}
+    ]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:false},tooltip:{rtl:true,callbacks:{label:ctx=>` ${ctx.parsed.x.toLocaleString('ar')} طالب`}}},
+    scales:{
+      x:{grid:{color:'rgba(26,37,53,.8)'},border:{display:false}},
+      y:{grid:{display:false},border:{display:false},ticks:{color:'#8aa0bc',font:{size:11}}}
+    }
+  }
+});
+
+// ── 8. MAIN TABLE ──
+let sortKey='total';
+function sortTable(key,btn){
+  sortKey=key;
+  document.querySelector('.card .filters').querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderMain();
+}
+function renderMain(){
+  let data=[...colleges];
+  if(sortKey==='total')    data.sort((a,b)=>b.total-a.total);
+  if(sortKey==='reg_pct')  data.sort((a,b)=>b.reg_pct-a.reg_pct);
+  if(sortKey==='reg_pct_asc') data.sort((a,b)=>a.reg_pct-b.reg_pct);
+  if(sortKey==='unreg')    data.sort((a,b)=>b.unreg-a.unreg);
+  const tbody=document.getElementById('mainBody');
+  tbody.innerHTML='';
+  const maxT=colleges.reduce((m,c)=>Math.max(m,c.total),0);
+  data.forEach((c,i)=>{
+    const rc=i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const color=c.reg_pct>=85?'var(--reg)':c.reg_pct>=65?'var(--gold)':'var(--unreg)';
+    const rw=(c.reg/c.total*100).toFixed(1);
+    const uw=(c.unreg/c.total*100).toFixed(1);
+    const tw=(c.total/maxT*100).toFixed(1);
+    tbody.innerHTML+=`
+      <tr>
+        <td><div class="rank ${rc}">${i+1}</div></td>
+        <td style="font-weight:600;color:var(--text)">${c.name}</td>
+        <td style="font-weight:800;font-size:14px;color:#e2eaf5">${c.total.toLocaleString('ar')}</td>
+        <td>
+          <div style="display:flex;height:9px;border-radius:5px;overflow:hidden;gap:1px;width:140px">
+            <div style="width:${rw}%;background:var(--reg);border-radius:5px 0 0 5px"></div>
+            <div style="width:${uw}%;background:var(--unreg);border-radius:0 5px 5px 0"></div>
+          </div>
+        </td>
+        <td>
+          <div class="prog-wrap">
+            <div class="prog-bg" style="width:100px">
+              <div style="position:absolute;top:0;right:0;height:100%;width:${c.reg_pct}%;background:${color};border-radius:6px"></div>
+            </div>
+            <span style="font-size:12px;font-weight:700;color:${color};min-width:40px;text-align:left">${c.reg_pct}%</span>
+          </div>
+        </td>
+        <td><span class="badge-g">✅ ${c.reg.toLocaleString('ar')}</span></td>
+        <td><span class="badge-r">⚠ ${c.unreg.toLocaleString('ar')}</span></td>
+      </tr>`;
+  });
+}
+renderMain();
+
+// animate bars
+setTimeout(()=>{
+  document.querySelectorAll('.rb-fill').forEach(el=>{el.style.width=el.dataset.w+'%'});
+  document.querySelectorAll('.prog-bg div[style*="position:absolute"]').forEach(el=>{});
+},300);
+</script>
+</body>
+</html>
